@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktywne Zadanie Optymalizacyjne</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 750px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #f7f9fa;
+            color: #2d3748;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        h1 {
+            font-size: 20px;
+            color: #1a202c;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .problem-statement {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        .step-container {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #edf2f7;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            display: none;
+        }
+        .step-container.active {
+            display: block;
+            border-color: #cbd5e0;
+        }
+        .step-container.completed {
+            display: block;
+            background-color: #f0fff4;
+            border-color: #c6f6d5;
+            opacity: 0.85;
+        }
+        .step-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+            color: #2b6cb0;
+        }
+        .step-container.completed .step-title {
+            color: #22543d;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        select:disabled {
+            background-color: #edf2f7;
+            color: #4a5568;
+            cursor: not-allowed;
+        }
+        button {
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover {
+            background-color: #2b6cb0;
+        }
+        button:disabled {
+            background-color: #cbd5e0;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .feedback.error {
+            color: #e53e3e;
+        }
+        .feedback.success {
+            color: #38a169;
+        }
+        .math {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .summary {
+            display: none;
+            background-color: #f0fff4;
+            border: 2px solid #38a169;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Krokowe Rozwiązywanie Zadania Optymalizacyjnego</h1>
+    
+    <div class="problem-statement">
+        <strong>Treść zadania:</strong> Suma długości jednej krawędzi podstawy i wysokości ostrosłupa prawidłowego czworokątnego jest równa 15. Znajdź wymiary ostrosłupa, dla którego jego objętość jest największa, oraz oblicz tę objętość.
+    </div>
+
+    <!-- KROK 1 -->
+    <div id="step1" class="step-container active">
+        <div class="step-title">Krok 1: Wyznaczenie zależności funkcyjnej i dziedziny zmiennej</div>
+        <p>Wybierz poprawne zapisanie wysokości <span class="math">h</span> w zależności od krawędzi podstawy <span class="math">a</span> oraz właściwą dziedzinę:</p>
+        <select id="select1">
+            <option value="">-- Wybierz odpowiedź --</option>
+            <option value="incorrect1">h = 15 + a, przy czym a &gt; 0</option>
+            <option value="correct">h = 15 - a, przy czym a &isin; (0, 15)</option>
+            <option value="incorrect2">h = 15 - a, przy czym a &isin; (0, &infin;)</option>
+        </select>
+        <button id="btn1" onclick="checkStep(1, 'correct')">Sprawdź etap</button>
+        <div id="feedback1" class="feedback"></div>
+    </div>
+
+    <!-- KROK 2 -->
+    <div id="step2" class="step-container">
+        <div class="step-title">Krok 2: Zbudowanie funkcji objętości V(a)</div>
+        <p>Podstawiając wyznaczoną zależność do wzoru na objętość ostrosłupa <span class="math">V = &frac13; a&sup2; h</span>, wskaż poprawną postać funkcji jednej zmiennej:</p>
+        <select id="select2">
+            <option value="">-- Wybierz odpowiedź --</option>
+            <option value="incorrect1">V(a) = 15a&sup2; - a&sup3;</option>
+            <option value="incorrect2">V(a) = &frac13; a(15 - a)&sup2;</option>
+            <option value="correct">V(a) = 5a&sup2; - &frac13; a&sup3;</option>
+        </select>
+        <button id="btn2" onclick="checkStep(2, 'correct')">Sprawdź etap</button>
+        <div id="feedback2" class="feedback"></div>
+    </div>
+
+    <!-- KROK 3 -->
+    <div id="step3" class="step-container">
+        <div class="step-title">Krok 3: Obliczenie pochodnej funkcji V'(a)</div>
+        <p>Wskaż prawidłowy wzór pochodnej funkcji objętości potrzebny do wyznaczenia ekstremów:</p>
+        <select id="select3">
+            <option value="">-- Wybierz odpowiedź --</option>
+            <option value="correct">V'(a) = 10a - a&sup2;</option>
+            <option value="incorrect1">V'(a) = 10a - 3a&sup2;</option>
+            <option value="incorrect2">V'(a) = 5a - a&sup2;</option>
+        </select>
+        <button id="btn3" onclick="checkStep(3, 'correct')">Sprawdź etap</button>
+        <div id="feedback3" class="feedback"></div>
+    </div>
+
+    <!-- KROK 4 -->
+    <div id="step4" class="step-container">
+        <div class="step-title">Krok 4: Wyznaczenie punktu krytycznego i wyniku końcowego</div>
+        <p>Rozwiąż równanie <span class="math">V'(a) = 0</span> wewnątrz dziedziny i wskaż optymalne wymiary oraz maksymalną objętość:</p>
+        <select id="select4">
+            <option value="">-- Wybierz odpowiedź --</option>
+            <option value="incorrect1">a = 5, h = 10, V = 83 i 1/3</option>
+            <option value="correct">a = 10, h = 5, V = 166 i 2/3</option>
+            <option value="incorrect2">a = 12, h = 3, V = 144</option>
+        </select>
+        <button id="btn4" onclick="checkStep(4, 'correct')">Sprawdź etap</button>
+        <div id="feedback4" class="feedback"></div>
+    </div>
+
+    <div id="summary" class="summary">
+        <h3>Gratulacje!</h3>
+        <p>Zadanie optymalizacyjne zostało rozwiązane poprawnie krok po kroku.</p>
+    </div>
+</div>
+
+<script>
+function checkStep(stepNum, correctValue) {
+    var selectElem = document.getElementById('select' + stepNum);
+    var feedbackElem = document.getElementById('feedback' + stepNum);
+    var buttonElem = document.getElementById('btn' + stepNum);
+    var currentStepElem = document.getElementById('step' + stepNum);
+    
+    if (selectElem.value === "") {
+        feedbackElem.className = "feedback error";
+        feedbackElem.innerHTML = "Proszę wybrać jedną z opcji przed sprawdzeniem.";
+        return;
+    }
+    
+    if (selectElem.value === correctValue) {
+        feedbackElem.className = "feedback success";
+        feedbackElem.innerHTML = "Poprawna odpowiedź!";
+        
+        // Lock current step
+        selectElem.disabled = true;
+        buttonElem.disabled = true;
+        currentStepElem.className = "step-container completed";
+        
+        // Show next step or summary
+        var nextStepNum = stepNum + 1;
+        var nextStepElem = document.getElementById('step' + nextStepNum);
+        if (nextStepElem) {
+            nextStepElem.className = "step-container active";
+        } else {
+            document.getElementById('summary').style.display = "block";
+        }
+    } else {
+        feedbackElem.className = "feedback error";
+        feedbackElem.innerHTML = "Błędna odpowiedź. Przeanalizuj warunki zadania i spróbuj ponownie (dostęp do kolejnego kroku zablokowany).";
+    }
+}
+</script>
+
+</body>
+</html>
